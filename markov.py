@@ -9,11 +9,9 @@ def open_and_read_file(file_path):
     Takes a string that is a file path, opens the file, and turns
     the file's contents as one string of text.
     """
+    text_string = open(file_path).read()
 
-    # your code goes here
-
-    return 'Contents of your file as one long string'
-
+    return text_string
 
 def make_chains(text_string):
     """Take input text as string; return dictionary of Markov chains.
@@ -39,20 +37,41 @@ def make_chains(text_string):
         >>> chains[('there','juanita')]
         [None]
     """
-
     chains = {}
 
-    # your code goes here
-
+    words = text_string.split()
+    for i in range(len(words) - 2):
+        word_tuple = (words[i], words[i + 1])
+        
+        if word_tuple in chains:
+            chains[word_tuple].append(words[i + 2])
+        else: # if it's NOT in the dict yet
+            chains[word_tuple] = []
+            chains[word_tuple].append(words[i + 2])
+    
     return chains
+    
+       
 
+
+    
 
 def make_text(chains):
     """Return text from chains."""
 
     words = []
-
-    # your code goes here
+    first_words = choice(list(chains.keys()))
+    words.append(first_words[0])
+    words.append(first_words[1])
+    third_word = choice(chains[first_words])
+    words.append(third_word)
+    new_tuple = first_words[1], third_word
+    while new_tuple in chains:
+        word = choice(chains[new_tuple])
+        words.append(word)
+        new_tuple = new_tuple[1], word
+        if new_tuple not in chains:
+            break
 
     return ' '.join(words)
 
