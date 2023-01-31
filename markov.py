@@ -61,8 +61,11 @@ def make_text(chains):
 
     words = []
     first_words = choice(list(chains.keys()))
-    words.append(first_words[0])
-    words.append(first_words[1])
+    while first_words[0].istitle() == False:
+            first_words = choice(list(chains.keys()))
+            if first_words[0].istitle() == True:
+                words.append(first_words[0])
+                words.append(first_words[1])
     third_word = choice(chains[first_words])
     words.append(third_word)
     new_tuple = first_words[1], third_word
